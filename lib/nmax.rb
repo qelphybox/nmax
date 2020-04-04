@@ -31,6 +31,7 @@ module Nmax
     def find
       buf = Buffer.new
       set = io.each_char.with_object(SortedSet.new) do |char, acc|
+        p char
         if DIGITS.include?(char) 
           buf << char 
         else
