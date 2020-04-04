@@ -2,4 +2,4 @@
 
 require 'nmax'
 
-Nmax::Finder.new($stdin, ARGV[0]).find
+p Nmax::Finder.new($stdin, ARGV[0].to_i).find

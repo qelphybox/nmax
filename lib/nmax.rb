@@ -3,20 +3,6 @@ require "set"
 
 module Nmax
   class Error < StandardError; end
-
-  class Buffer
-    def initialize
-      @buf = ''
-    end
-
-    def <<(d)
-      @buf << d
-    end
-
-    def flush
-      @buf.tap { @buf.clear } if !@buf.empty?
-    end
-  end
   
   class Finder
     attr_reader :io, :n
@@ -29,17 +15,16 @@ module Nmax
     end
 
     def find
-      buf = Buffer.new
+      buf = ''
       set = io.each_char.with_object(SortedSet.new) do |char, acc|
-        p char
         if DIGITS.include?(char) 
-          buf << char 
-        else
-          num_str = buf.flush
-          acc << num_str.to_i if num_str
+          buf << char
+        elsif !buf.empty?
+          acc << buf.to_i
+          buf.clear
         end
       end
-      p set
+      set.to_a.last(n)
     end
   end
 end
